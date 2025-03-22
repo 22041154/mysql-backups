@@ -3,8 +3,7 @@ name: Backup MySQL Database
 on:
   schedule:
     - cron: '*/15 * * * *'
-  workflow_dispatch: 
-
+  workflow_dispatch:
 jobs:
   backup:
     runs-on: ubuntu-latest
@@ -18,11 +17,15 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y docker-compose
 
-      - name: Configurar Docker
+      - name: Iniciar contenedor MySQL
         run: |
           docker-compose up -d
+          sleep 20  # Esperar a que el contenedor inicie correctamente
 
-      - name: Ejecutar el script de backup
+      - name: Dar permisos de ejecución al script
+        run: chmod +x backup.sh
+
+      - name: Ejecutar Backup de MySQL
         run: ./backup.sh
 
       - name: Subir backups al repositorio
