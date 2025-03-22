@@ -11,5 +11,6 @@ services:
     ports:
       - "3307:3306"
     volumes:
-      - ./data:/var/lib/mysql   # Persistir los datos de MySQL
-      - ./backups:/backups       # Carpeta de backups en el host
+      - ./data:/var/lib/mysql
+      - ./backups:/backups
+    command: bash -c "mkdir -p /backups && chmod 777 /backups && docker-entrypoint.sh mysqld"
