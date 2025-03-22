@@ -27,8 +27,6 @@ jobs:
 
       - name: Ejecutar Backup de MySQL
         run: ./backup.sh
-      - name: Verificar ubicación de backups
-        run: find / -name "backup_*.sql" 2>/dev/null
 
       - name: Subir backups al repositorio
         run: |
