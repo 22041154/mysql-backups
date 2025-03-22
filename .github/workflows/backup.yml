@@ -1,0 +1,29 @@
+name: Backup MySQL Database
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clonar el repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Docker
+        run: |
+          docker pull mysql
+          docker run --name mysqlDB2 -e MYSQL_ROOT_PASSWORD=1234 -p 3307:3306 -d mysql
+
+      - name: Ejecutar el script de backup
+        run: ./backup.sh
+
+      - name: Subir backups al repositorio
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions@github.com"
+          git add backup_*.sql
+          git commit -m "Backup automático $(date)"
+          git push
