@@ -1,8 +1,7 @@
 TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")
-BACKUP_FILE="backup_$TIMESTAMP.sql"
+BACKUP_FILE="/backups/backup_${TIMESTAMP}.sql"
 
-docker exec mysqlDB2 mysqldump -u root -p'1234'
+echo "Realizando backup en $BACKUP_FILE..."
+docker exec mysqlDB2 mysqldump -u root -p1234 mysqlD2 > "backups/backup_${TIMESTAMP}.sql"
 
-git add $BACKUP_FILE
-git commit -m "Backup automático: $TIMESTAMP"
-git push origin main
+echo "Backup completado."
