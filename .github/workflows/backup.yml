@@ -31,8 +31,9 @@ jobs:
 
       - name: Subir backups al repositorio
         run: |
-              git config --global user.name "github-actions[bot]"
-              git config --global user.email "github-actions@github.com"
-              git add backups/
-              git commit -m "Backup automático $(date)" || echo "No hay cambios para confirmar"
-              git push
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions@github.com"
+          git add backups/backup_*.sql
+          git commit -m "Backup automático $(date)"
+          git push https://x-access-token:${{ secrets.GH_PAT }}@github.com/22041154/mysql-backups.git main
+
