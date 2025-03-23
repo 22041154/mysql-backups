@@ -20,16 +20,19 @@ jobs:
       - name: Configurar Docker
         run: docker-compose up -d
 
+      - name: Dar permisos de ejecución al script de backup
+        run: chmod +x backup.sh
+
       - name: Ejecutar el script de backup
         run: ./backup.sh
-
-      - name: Verificar si el backup se generó
-        run: ls -lh backups/ || echo "No se encontraron backups"
+        
+      - name: Verificar si se generó el backup
+        run: ls -l backups/
 
       - name: Subir backups al repositorio
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions@github.com"
-          git add backups/backup_*.sql
-          git commit -m "Backup automático $(date)" || echo "No hay cambios que subir"
-          git push || echo "No hay cambios que subir"
+              git config --global user.name "github-actions[bot]"
+              git config --global user.email "github-actions@github.com"
+              git add backups/
+              git commit -m "Backup automático $(date)" || echo "No hay cambios para confirmar"
+              git push
