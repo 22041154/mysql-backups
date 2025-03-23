@@ -29,17 +29,10 @@ jobs:
       - name: Verificar si se generó el backup
         run: ls -l backups/
 
-      - name:  Autenticar con GH_PAT
-        env:
-          GH_PAT: ${{ secrets.GH_PAT }}
+      - name: Subir backups al repositorio
         run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          git remote set-url origin https://x-access-token:${GH_PAT}@github.com/${{ github.repository }}.git
-
-      - name:  Subir backup a GitHub
-        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions@github.com"
           git add backups/backup_*.sql
-          git commit -m "Backup automático $(date)"
-          git push origin main
-
+          git commit -m "Backup automático $(date)" || echo "No hay cambios que subir"
+          git push || echo "No hay cambios que subir"
